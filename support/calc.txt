@@ -1,0 +1,77 @@
+calc.exe - A simple command-line calculator
+
+Options:
+    /h, /?   Show help
+    /i       Display result as integer
+
+Examples:
+
+    calc 5*3                    ; No spaces, so quotes are not needed
+    calc "fac 4"                ; Unambiguous, so parens are not needed
+    set x=3
+    set y=4
+    calc "sqrt (%x%^2 + %y%^2)" ; Use environment variables
+
+Operations:
+
+    Operator  Description
+    --------  -----------
+       +      Add
+       -      Subtract
+       /      Divide
+       *      Multiply
+       ^      Exponent
+       %      Modulus
+       (      Open parenthesis
+       )      Close parenthesis
+       ,      Comma separates list items; only last item of list is evaluated.
+
+
+Functions:
+
+    Name    Description          Example
+    ----    -----------          -------
+    abs     Absolute value       abs(-3) -> 3
+    acos    Arccosine            acos(-1)/pi -> 1
+    asin    Arcsine              asin(1)/pi -> 0.5
+    atan    Arctangent           atan(1)/pi -> 0.25      range: (-pi/2, pi/2)
+    atan2   Arctangent2          atan2(1, 0)/pi -> 0.5   range: (-pi, pi]
+    ceil    Ceiling              ceil(3.2) -> 4
+    cos     Cosine               cos(2*pi) -> 1
+    cosh    Hyperbolic cosine    cosh(0.5) -> 1.127626
+    e       Euler's number       2.718282
+    exp     e^x                  exp(1) -> 2.718282
+    fac     Factorial            fac(5)-> 120
+    floor   Floor                floor(2.8) -> 2
+    ln      Natural log          ln(2718282) -> 1
+    log     Log base-10          log(100) -> 2
+    log10   Log base-10          log10(100) -> 2
+    ncr     Combination          ncr(6,2) -> 15
+    npr     Permutation          npr(6,2) -> 30
+    pi      Pi constant          3.141593
+    pow     Power                pow(2,3) -> 8
+    sin     Sine                 sin(pi/2) -> 1
+    sinh    Hyperbolic sine      sinh(0.5) -> 0.521095
+    sqrt    Square root          sqrt(9) -> 3
+    tan     Tangent              tan(pi/4) -> 1
+    tanh    Hyperbolic tangent   tanh(0.5) -> 0.462117
+
+
+Scientific notation may be used. e.g. 1e3 = 1000.
+
+In some cases parentheses are optional: "sqrt 9 + 3" -> 6.
+
+Environment variables can be used in an expression.
+
+If any spaces are used, the expression must be quoted.
+
+Trigonometric functions accept and return values in radians.
+
+    To convert degrees to radians: Deg * pi / 180 = Rad
+    To convert radians to degrees: Rad * 180 / pi = Deg
+
+
+
+Calculation engine by https://github.com/codeplea/tinyexpr
+
+See also: FOXCALC, RCAL
