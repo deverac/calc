@@ -1,6 +1,8 @@
+`calc.exe` - A simple command-line calculator.
+
 `calc.zip` is a FreeDOS package containing `calc.exe` (and sources).
 
-`calc.exe` - A simple command-line calculator.
+To install: `fdinst install calc.zip`. To install with sources: `fdnpkg install-wsrc calc.zip`
 
 `calc.exe` was created to run on (16-bit) FreeDOS, but can also be built to run on (64-bit) Linux. On Linux, a much more capable `calc` program already exists.
 
