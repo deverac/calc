@@ -74,4 +74,4 @@ Trigonometric functions accept and return values in radians.
 
 Calculation engine by https://github.com/codeplea/tinyexpr
 
-See also: FOXCALC, RCAL
+See also: FOXCALC, RCAL, GNUBC
