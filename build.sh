@@ -7,15 +7,16 @@
 
 if [ "$1" = "calc" ]; then
 
-    rm -rf calc
+    rm -rf calq
     cd src
-    gcc calc.c tinyexpr.c -lm -o ../calc
+    gcc calc.c tinyexpr.c -lm -o ../calq
     cd ..
 
 elif [ "$1" = "clean" ]; then
 
     rm -f c.zip
-    rm -f calc
+    rm -f calc.zip
+    rm -f calq
 
 
 elif [ "$1" = "zip" ]; then

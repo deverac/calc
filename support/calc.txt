@@ -3,14 +3,30 @@ calc.exe - A simple command-line calculator
 Options:
     /h, /?   Show help
     /i       Display result as integer
+    /b       Display result in hex, dec, oct, bin format
 
 Examples:
 
-    calc 5*3                    ; No spaces, so quotes are not needed
-    calc "fac 4"                ; Unambiguous, so parens are not needed
-    set x=3
-    set y=4
-    calc "sqrt (%x%^2 + %y%^2)" ; Use environment variables
+    >calc 5*3                    ; No spaces, so quotes are not needed
+    15.000000
+
+    >calc "fac 4" /i             ; Unambiguous, so parens are not needed
+    24
+
+    >set x=3
+    >set y=4
+    >calc "sqrt (%x%^2 + %y%^2)" ; Use environment variables
+    5.000000
+
+    >calc 0b00101101 /b
+    0x2D         (Hexadecimal)
+    45           (Decimal)
+    0c55         (Octal)
+    0b101101     (Binary)
+
+    >calc "0c37 + 0b101 + 1e2 + 0x1C + 37"
+    201.000000
+
 
 Operations:
 
@@ -39,6 +55,7 @@ Functions:
     ceil    Ceiling              ceil(3.2) -> 4
     cos     Cosine               cos(2*pi) -> 1
     cosh    Hyperbolic cosine    cosh(0.5) -> 1.127626
+  * deg     Degrees              deg(pi) -> 180
     e       Euler's number       2.718282
     exp     e^x                  exp(1) -> 2.718282
     fac     Factorial            fac(5)-> 120
@@ -50,25 +67,29 @@ Functions:
     npr     Permutation          npr(6,2) -> 30
     pi      Pi constant          3.141593
     pow     Power                pow(2,3) -> 8
+  * rad     Radians              rad(180) -> 3.141593
     sin     Sine                 sin(pi/2) -> 1
     sinh    Hyperbolic sine      sinh(0.5) -> 0.521095
     sqrt    Square root          sqrt(9) -> 3
     tan     Tangent              tan(pi/4) -> 1
     tanh    Hyperbolic tangent   tanh(0.5) -> 0.462117
 
+Functions preceded by '*' have been added to TinyExpr.
 
 Scientific notation may be used. e.g. 1e3 = 1000.
+
+Values can be entered in hex (0xNN), octal (0cNN), binary (0bNN) format.
 
 In some cases parentheses are optional: "sqrt 9 + 3" -> 6.
 
 Environment variables can be used in an expression.
 
-If any spaces are used, the expression must be quoted.
+In some cases, expression need not be quoted.
 
 Trigonometric functions accept and return values in radians.
 
-    To convert degrees to radians: Deg * pi / 180 = Rad
-    To convert radians to degrees: Rad * 180 / pi = Deg
+    To convert degrees to radians: 'Deg * pi / 180 = Rad' or use rad().
+    To convert radians to degrees: 'Rad * 180 / pi = Deg' or use deg().
 
 
 

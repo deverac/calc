@@ -184,6 +184,9 @@ static double ncr(double n, double r) {
 }
 static double npr(double n, double r) {return ncr(n, r) * fac(r);}
 
+static double deg(double radians) { return radians * 180.0 / pi(); }
+static double rad(double degrees) { return degrees * pi() / 180.0; }
+
 static const te_variable functions[] = {
     /* must be in alphabetical order */
     {"abs", fabs,     TE_FUNCTION1 | TE_FLAG_PURE, 0},
@@ -194,6 +197,7 @@ static const te_variable functions[] = {
     {"ceil", ceil,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"cos", cos,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"cosh", cosh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"deg", deg,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"e", e,          TE_FUNCTION0 | TE_FLAG_PURE, 0},
     {"exp", exp,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"fac", fac,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
@@ -209,6 +213,7 @@ static const te_variable functions[] = {
     {"npr", npr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
     {"pi", pi,        TE_FUNCTION0 | TE_FLAG_PURE, 0},
     {"pow", pow,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    {"rad", rad,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"sin", sin,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"sinh", sinh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {"sqrt", sqrt,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
@@ -260,6 +265,42 @@ static double divide(double a, double b) {return a / b;}
 static double negate(double a) {return -a;}
 static double comma(double a, double b) {(void)a; return b;}
 
+// Enhance strtod() to handle binary and octal strings having the form:
+//    0b10010      (binary)
+//    0c537        (octal)
+// If nptr does not start with '0b' or '0c', nptr will be parsed by strtod().
+double strtod2(const char *nptr, char **endptr) {
+    char ch;
+    int base = 0;
+    long val = 0;
+    if (nptr[0] != '\0') {
+        if (nptr[1] != '\0') {
+            if (nptr[0] == '0') {
+                ch = nptr[1];
+                if (ch == 'b') { // binary
+                    base = 2;
+                } else if (ch == 'c') { // octal
+                    base = 8;
+                }
+                if (base > 0) {
+                    (*endptr)++;
+                    (*endptr)++;
+                    while ((ch = **endptr)) {
+                        if (ch >= '0' && ch <= (base - 1 + '0')) {
+                            val *= base;
+                            val += (ch - '0');
+                            (*endptr)++;
+                        } else {
+                            break;
+                        }
+                    }
+                    return val;
+                }
+            }
+        }
+    }
+    return strtod(nptr, endptr);
+}
 
 void next_token(state *s) {
     s->type = TOK_NULL;
@@ -273,7 +314,7 @@ void next_token(state *s) {
 
         /* Try reading a number. */
         if ((s->next[0] >= '0' && s->next[0] <= '9') || s->next[0] == '.') {
-            s->value = strtod(s->next, (char**)&s->next);
+            s->value = strtod2(s->next, (char**)&s->next);
             s->type = TOK_NUMBER;
         } else {
             /* Look for a variable or builtin function call. */

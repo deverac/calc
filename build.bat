@@ -22,11 +22,7 @@ goto end
     if exist te-src\NUL deltree /y te-src > NUL
     goto end
 
-    rem if exist src\NUL deltree /y src > NUL
 
-    rem if exist src\NUL deltree /y src > NUL
-    rem xcopy /e te-src src\
-    rem if exist te-src\NUL deltree /y te-src > NUL
 :calc
     rem Build executable
     if exist te-src\NUL deltree /y te-src > NUL

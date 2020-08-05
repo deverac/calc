@@ -4,11 +4,14 @@
 
 To install: `fdinst install calc.zip`. To install with sources: `fdnpkg install-wsrc calc.zip`
 
-`calc.exe` was created to run on (16-bit) FreeDOS, but can also be built to run on (64-bit) Linux. On Linux, a much more capable `calc` program already exists.
+See [calc.txt](./support/calc.txt) for documentation and examples.
+
+`calc.exe` was created to run on (16-bit) FreeDOS, but can also be built to run on (64-bit) Linux. When built on Linux, it is named `calq` in order to avoid conflicting with the existing (and much more capable) `calc` command.
 
 `calc.exe` uses [TinyExpr](https://github.com/codeplea/tinyexpras) as its calculation engine. `tinyexpr.zip` contains a subset of the TinyExpr source files that are needed to build `calc.exe`. The source code for tinyexpr has a separate license.
 
-The build script requires the [difpat](https://github.com/deverac/difpat) package to be installed.
+Building on FreeDOS requires the [difpat](https://github.com/deverac/difpat) package to be installed.
+
 
 On FreeDOS:
 
@@ -20,5 +23,5 @@ On FreeDOS:
 On Linux:
 
     ./build.sh clean     Remove generated files
-    ./build.sh hexdump   Build the hexd executable
+    ./build.sh calc      Build the calq executable
     ./build.sh zip       Store files for FreeDOS in c.zip
