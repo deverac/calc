@@ -1,5 +1,6 @@
 #include "tinyexpr.h"
 #include <limits.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +10,9 @@
 #define NAME_LEN 6
 #define NOTE_LEN 30
 
+// 53 bits store the mantissa of a (64-bit) double, so 2^53-1 is the largest
+// integer where it and all smaller integers can be represented exactly.
+#define LIMIT pow(2, 53) - 1
 
 void print_formatted_function_names() {
     char blank[] = "";
@@ -20,7 +24,7 @@ void print_formatted_function_names() {
         "tan", "tanh"
     };
     char notes[][NOTE_LEN] = {
-        "factorial: fac 5=120",
+        "factorial: fac(5)=120",
         "combination: ncr(6,2)=15",
         "permutation: npr(6,2)=30",
         "atan has range (-pi/2, pi/2)",
@@ -73,24 +77,20 @@ void help(char * progname) {
 
 
 void print_binary(double a) {
-    unsigned long long n = (unsigned long long) a;
-    int got_one = 0;
-    unsigned int hibit = (8 * sizeof(1ULL)) - 1;
-    unsigned long long int i = 1ULL << hibit;
+    long long val = (long long) a;
+    unsigned long long i = 1ULL << ((8 * sizeof(long long)) - 1);
 
     printf("0b");
-    while(i > 0) {
-        if (n & i) {
-            got_one = 1;
+    if (val) {
+        while (i > 0 && ! (val & i)) {
+            i >>= 1;
         }
-        if (got_one) {
-            (n & i) ? printf("1"): printf("0");
+        while (i > 0) {
+            (val & i) ? printf("1") : printf("0");
+            i >>= 1;
         }
-        if (i == 1) {
-            break;
-        } else {
-            i = i >> 1;
-        }
+    } else {
+        printf("0");
     }
     printf("\n");
 }
@@ -137,13 +137,33 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    if (isnan(result)) {
+        // Sanity check. 'error' should be non-zero if result is NaN.
+        fprintf(stderr, "Result is not a number.\n");
+        exit(1);
+    }
+
+    if (isinf(result)) {
+        fprintf(stderr, "Result is infinite.\n");
+        exit(1);
+    }
+
+    if (fabs(result) > LIMIT) {
+        if (showBases) {
+            fprintf(stderr, "Result is out of range and cannot be converted.\n");
+            exit(1);
+        } else {
+            fprintf(stderr, "Result may be rounded.\n");
+        }
+    }
+
     if (showBases) {
-        printf("0x%X\n", (unsigned long long)result);
-        printf("%lld\n", (unsigned long long)result);
-        printf("0c%o\n",(unsigned long long)result);
+        printf("0x%llX\n", (long long)result);
+        printf("%.0f\n", result);
+        printf("0c%llo\n",(long long)result);
         print_binary(result);
     } else if (showIntResult) {
-        printf("%ld\n", (long)result);
+        printf("%.0f\n", result);
     } else {
         printf("%f\n", result);
     }

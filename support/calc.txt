@@ -91,7 +91,10 @@ Trigonometric functions accept and return values in radians.
     To convert degrees to radians: 'Deg * pi / 180 = Rad' or use rad().
     To convert radians to degrees: 'Rad * 180 / pi = Deg' or use deg().
 
-
+Due to how numbers are stored by the computer, values exceeding the limit of
+abs(2^53-1) are rounded to the nearest value that can be represented. If the
+result of a calculation exceeds the limit, a message will be printed. The '/b'
+option will not convert values larger than the limit.
 
 Calculation engine by https://github.com/codeplea/tinyexpr
 
