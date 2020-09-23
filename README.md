@@ -8,7 +8,7 @@ See [calc.txt](./support/calc.txt) for documentation and examples.
 
 `calc.exe` was created to run on (16-bit) FreeDOS, but can also be built to run on (64-bit) Linux. When built on Linux, it is named `calq` in order to avoid conflicting with the existing (and much more capable) `calc` command.
 
-`calc.exe` uses [TinyExpr](https://github.com/codeplea/tinyexpras) as its calculation engine. `tinyexpr.zip` contains a subset of the TinyExpr source files that are needed to build `calc.exe`. The source code for tinyexpr has a separate license.
+`calc.exe` uses [TinyExpr](https://github.com/codeplea/tinyexpr) as its calculation engine. `tinyexpr.zip` contains a subset of the TinyExpr source files that are needed to build `calc.exe`. The source code for tinyexpr has a separate license.
 
 Building on FreeDOS requires the [difpat](https://github.com/deverac/difpat) package to be installed.
 
